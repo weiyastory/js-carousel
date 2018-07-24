@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>第一种轮播，自动切换，有点击交互</title>
+    <style>
+        .container{
+            margin:50px auto;
+            position: relative;
+            width:1224px;
+            height:500px;
+        }
+        .pic{
+            width:1224px;
+            height:500px;
+            visibility: hidden;
+            position: absolute;
+            top: 0;
+            left:0;
+            -webkit-background-size: contain;
+            background-size: contain;
+        }
+        .i1{
+            background: url(../img/Carousel_1/banner_00.jpg) no-repeat center;
+        }
+        .i2{
+            background: url(../img/Carousel_1/banner_01.jpg) no-repeat center;
+        }
+        .i3{
+            background: url(../img/Carousel_1/banner_02.jpg) no-repeat center;
+        }
+        .i4{
+            background: url(../img/Carousel_1/banner_03.jpg) no-repeat center;
+        }
+        .i5{
+            background: url(../img/Carousel_1/banner_04.jpg) no-repeat center;
+        }
+        .i6{
+            background: url(../img/Carousel_1/banner_05.jpg) no-repeat center;
+        }
+        .opt{
+            position: absolute;
+            top:500px;
+            left:0;
+            width:1224px;
+            height:162px;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            transform: translate(0,-36px);
+        }
+        .btn{
+            width:306px;
+            height:162px;
+            flex-grow:1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn img{
+            width:100%;
+            flex-grow:1;
+        }
+        .progress{
+            height:5px;
+            flex-grow: 0;
+            width:100%;
+        }
+        .change{
+            width:0;
+            height:5px;
+        }
+        .p0{
+            background: #7b5596;
+        }
+        .p0 .change{
+            background: #49047a;
+        }
+        .p1{
+            background: #83a2cc;
+        }
+        .p1 .change{
+            background: #13478f;
+        }
+        .p2{
+            background: #e18e40;
+        }
+        .p2 .change{
+            background: #b94e00;
+        }
+        .p3{
+            background: #47acab;
+        }
+        .p3 .change{
+            background:#00605f;
+        }
+        .p4{
+            background: #c86c8c;
+        }
+        .p4 .change{
+            background: #a41a4a;
+        }
+        .p5{
+            background: #9089d6;
+        }
+        .p5 .change{
+            background: #4a419e;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="pic i1"></div>
+    <div class="pic i2"></div>
+    <div class="pic i3"></div>
+    <div class="pic i4"></div>
+    <div class="pic i5"></div>
+    <div class="pic i6"></div>
+    <div class="opt">
+        <div class="btn" onclick="changIndex(0);">
+            <img src="../img/Carousel_1/sbanner_00.png" >
+            <div class="progress p0">
+                <div class="change"></div>
+            </div>
+        </div>
+        <div class="btn" onclick="changIndex(1);">
+            <img src="../img/Carousel_1/sbanner_01.png" >
+            <div class="progress p1">
+                <div class="change"></div>
+            </div>
+        </div>
+        <div class="btn" onclick="changIndex(2);">
+            <img src="../img/Carousel_1/sbanner_02.png" >
+            <div class="progress p2">
+                <div class="change"></div>
+            </div>
+        </div>
+        <div class="btn" onclick="changIndex(3);">
+            <img src="../img/Carousel_1/sbanner_03.png" >
+            <div class="progress p3">
+                <div class="change"></div>
+            </div>
+        </div>
+        <div class="btn" onclick="changIndex(4);">
+            <img src="../img/Carousel_1/sbanner_04.png" >
+            <div class="progress p4">
+                <div class="change"></div>
+            </div>
+        </div>
+        <div class="btn" onclick="changIndex(5);">
+            <img src="../img/Carousel_1/sbanner_05.png" >
+            <div class="progress p5">
+                <div class="change"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        changIndex(0);
+    };
+    var preInt;
+    function changIndex(index){
+        console.log('-changIndex--index--',index)
+        var pics = document.getElementsByClassName('pic'),
+            changes =  document.getElementsByClassName('change');
+        for(var i = pics.length-1;i>=0;i--){
+            if(i != index){
+                pics[i].style.visibility =  'hidden';
+                pics[i].style.opacity = '0';
+                changes[i].style.visibility = 'hidden';
+            }
+        }
+        pics[index].style.opacity = '1';
+        pics[index].style.visibility = 'visible';
+        clearInterval(preInt);
+        progress(changes,index);
+    }
+    function progress(ele, index){
+        console.log('-progress-ele-index--',ele, index)
+        ele[index].style.visibility = 'visible';
+        var width = 0,
+            speed = 4;
+        var step = function () {
+            if(width < 204){
+                width += speed;
+            }else{
+                clearInterval(preInt);
+                width = 0;
+                index = index == 5? 0: ++index;
+                changIndex(index);
+            }
+            ele[index].style.width = width +'px';
+        };
+        preInt = setInterval(step, 50);
+    }
+</script>
+</body>
+</html>

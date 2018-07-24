@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>第3种轮播， 自动且有点击交互</title>
+    <style>
+        .container{
+            margin:50px auto;
+            position: relative;
+            width:450px;
+            height:300px;
+            perspective: 800px;
+
+        }
+        .pic>div:nth-of-type(1){
+            background: url(../img/Carousel_3/1.jpg) no-repeat center;
+        }
+        .l2{
+            transform: translate3d(-90%,0,-300px);
+            z-index: 1;
+        }
+        .pic>div:nth-of-type(2){
+            background: url(../img/Carousel_3/2.jpg) no-repeat center;
+        }
+        .l1{
+            transform: translate3d(-45%,0,-100px);
+            z-index: 2;
+        }
+        .pic>div:nth-of-type(3){
+            background: url(../img/Carousel_3/3.jpg) no-repeat center;
+        }
+        .cur{
+            transform: translate3d(0,0,0);
+            z-index: 3;
+        }
+        .pic>div:nth-of-type(4){
+            background: url(../img/Carousel_3/4.jpg) no-repeat center;
+        }
+        .r1{
+            transform: translate3d(45%,0,-100px);
+            z-index: 2;
+        }
+        .pic>div:nth-of-type(5){
+            background: url(../img/Carousel_3/5.jpg) no-repeat center;
+        }
+        .r2{
+            transform: translate3d(90%,0,-300px);
+            z-index: 1;
+        }
+        .pic{
+            width:450px;
+            height:300px;
+            position: absolute;
+            top: 0;
+            left:0;
+        }
+        .pic>div{
+            width:100%;
+            height:100%;
+            position: absolute;
+            top: 0;
+            left:0;
+            -webkit-background-size: contain;
+            background-size: contain;
+            -webkit-transition: all 1s linear;
+            -moz-transition: all 1s linear ;
+            -ms-transition: all 1s linear ;
+            -o-transition: all 1s linear ;
+            transition: all 1s linear ;
+        }
+        .dot{
+            position: absolute;
+            bottom:10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width:100%;
+            z-index:4;
+        }
+        .dot > .dot1{
+            width:15px;
+            height:15px;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            background: #4f4f4f;
+            flex-grow: 0;
+            margin-right: 10px;
+        }
+        .empty{
+            flex-grow:1;
+        }
+        .left, .right{
+            font-size: 35px;
+            color: #fff;
+            background: #666;
+            opacity: .4;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            position: absolute;
+            top: 120px;
+            text-align: center;
+        }
+        .left:hover, .right:hover{
+            background: #555;
+            opacity: .5;
+        }
+        .left{
+            left: -300px;
+        }
+        .right{
+            right: -300px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="pic">
+        <div onclick="changIndex(0)"></div>
+        <div onclick="changIndex(1)"></div>
+        <div onclick="changIndex(2)"></div>
+        <div onclick="changIndex(3)"></div>
+        <div onclick="changIndex(4)"></div>
+    </div>
+    <div class="left" onclick="changIndexD(-1)"><</div>
+    <div class="right" onclick="changIndexD(1)">></div>
+    <div class="dot">
+        <div class="empty"></div>
+        <div class="dot1" onclick="changIndex(0)"></div>
+        <div class="dot1" onclick="changIndex(1)"></div>
+        <div class="dot1" onclick="changIndex(2)"></div>
+        <div class="dot1" onclick="changIndex(3)"></div>
+        <div class="dot1" onclick="changIndex(4)"></div>
+        <div class="empty"></div>
+    </div>
+</div>
+<script>
+    var curIndex, changInt ;
+    window.onload = function () {
+        changIndex(0);
+    };
+    function changIndexD(num){
+        curIndex = curIndex + num;
+        if(curIndex==5){
+            curIndex = 0;
+        }else if (curIndex==-1){
+            curIndex = 4;
+        }
+        changIndex(curIndex);
+    }
+    function changIndex(index){
+        curIndex = index;
+        clearInterval(changInt);
+        var pics = document.querySelectorAll('.pic>div'),
+            changes =  document.getElementsByClassName('dot1');
+        for(var i = pics.length-1;i>=0;i--){
+            if(i != index){
+                changes[i].style.background = "#4f4f4f";
+            }
+        }
+        var l1 = (index - 1<0)?(index - 1+5):index - 1,
+            l2 = (index - 2<0)?(index - 2+5):index - 2,
+            r1 = (index + 1>4)?(index + 1-5):index + 1,
+            r2 = (index + 2>4)?(index + 2-5):index + 2;
+        pics[l1].setAttribute('class','l1');
+        pics[l2].setAttribute('class','l2');
+        pics[r1].setAttribute('class','r1');
+        pics[r2].setAttribute('class','r2');
+        pics[index].setAttribute('class','cur');
+        changes[index].style.background = "#ff0000";
+        changInt = setInterval(changeIndexAtuo, 3000);
+    }
+    function changeIndexAtuo(){
+        ++curIndex ;
+        if(curIndex==5){
+            curIndex = 0;
+        }
+        changIndex(curIndex);
+    }
+</script>
+</body>
+</html>

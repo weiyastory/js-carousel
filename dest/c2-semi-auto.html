@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>第2种轮播，自动切换， 但无点击交互</title>
+    <style>
+        .container{
+            margin:50px auto;
+            position: relative;
+            width:600px;
+            height:400px;
+        }
+        .pic{
+            width:600px;
+            height:400px;
+            visibility: hidden;
+            position: absolute;
+            top: 0;
+            left:0;
+            -webkit-background-size: contain;
+            background-size: contain;
+        }
+        .i1{
+            background: url(../img/Carousel_2/1.jpg) no-repeat center;
+        }
+        .i2{
+            background: url(../img/Carousel_2/2.jpg) no-repeat center;
+        }
+        .i3{
+            background: url(../img/Carousel_2/3.jpg) no-repeat center;
+        }
+        .i4{
+            background: url(../img/Carousel_2/4.jpg) no-repeat center;
+        }
+        .i5{
+            background: url(../img/Carousel_2/5.jpg) no-repeat center;
+        }
+        .container:hover .direction{
+            visibility: visible;
+        }
+        .direction{
+            visibility: hidden;
+            position: absolute;
+            top:40%;
+            left:0;
+            right: 0;
+        }
+        .direction>div{
+            background: #4f4f4f;
+            opacity:.5;
+            width:40px;
+            height:40px;
+            color: #fff;
+            position: absolute;
+            font-size: 35px;
+            text-align: center;
+        }
+        .left {
+            left: 10px;
+        }
+        .right{
+            right: 10px;
+        }
+        .dot{
+            position: absolute;
+            bottom:15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width:100%;
+        }
+        .dot > .dot1{
+            width:15px;
+            height:15px;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            background: #4f4f4f;
+            flex-grow: 0;
+            margin-right: 10px;
+        }
+        .empty{
+            flex-grow:1;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="pic i1"></div>
+    <div class="pic i2"></div>
+    <div class="pic i3"></div>
+    <div class="pic i4"></div>
+    <div class="pic i5"></div>
+    <div class="direction">
+        <div class="left" onclick="changIndexD(-1)"><</div>
+        <div class="right" onclick="changIndexD(1)">></div>
+    </div>
+    <div class="dot">
+        <div class="empty"></div>
+        <div class="dot1" ></div>
+        <div class="dot1" ></div>
+        <div class="dot1" ></div>
+        <div class="dot1" ></div>
+        <div class="dot1" ></div>
+        <div class="empty"></div>
+    </div>
+</div>
+<script>
+    var curIndex,changInt ;
+    window.onload = function () {
+        changIndex(0);
+    };
+    function changIndexD(num){
+        console.log('===changIndexD---')
+        curIndex = curIndex + num;
+        if(curIndex==5){
+            curIndex = 0;
+        }else if (curIndex==-1){
+            curIndex = 4;
+        }
+        changIndex(curIndex);
+    }
+    function changIndex(index){
+        console.log('===changIndex--index-',index)
+        clearInterval(changInt);
+        curIndex = index;
+        var pics = document.getElementsByClassName('pic'),
+            changes =  document.getElementsByClassName('dot1');
+        for(var i = pics.length-1;i>=0;i--){
+            if(i != index){
+                pics[i].style.visibility =  'hidden';
+                changes[i].style.background = "#4f4f4f";
+            }
+        }
+        pics[index].style.visibility = 'visible';
+        changes[index].style.background = "#ff0000";
+        changInt = setInterval(changeIndexAtuo, 2000);
+    }
+    function changeIndexAtuo(){
+        ++curIndex ;
+        if(curIndex==5){
+            curIndex = 0;
+        }
+        changIndex(curIndex);
+    }
+</script>
+</body>
+</html>
